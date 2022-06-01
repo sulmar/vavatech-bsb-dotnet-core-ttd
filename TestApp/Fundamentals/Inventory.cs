@@ -15,12 +15,12 @@ namespace TestApp.Fundamentals
             if (order == Order.Ascending)
                 InventoryItems = InventoryItems.OrderBy(item => item.Price);
             else
-                InventoryItems = InventoryItems.OrderByDescending(item => item.Name);
+                InventoryItems = InventoryItems.OrderByDescending(item => item.Price);
         }
 
         public void SortByName(Order order)
         {
-            if (order == Order.Descending)
+            if (order == Order.Ascending)
                 InventoryItems = InventoryItems.OrderBy(item => item.Name);
             else
                 InventoryItems = InventoryItems.OrderByDescending(item => item.Name);
