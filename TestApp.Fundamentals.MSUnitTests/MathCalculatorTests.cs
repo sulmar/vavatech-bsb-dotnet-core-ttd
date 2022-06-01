@@ -82,6 +82,55 @@ namespace TestApp.Fundamentals.MSUnitTests
             // Assert
         }
 
+        [TestMethod]
+        public void Max_FirstArgumentIsGreater_ReturnsFirstArgument()
+        {
+            // Act
+            int result = mathCalculator.Max(2, 1);
+
+            // Assert
+            Assert.AreEqual(2, result);
+        }
+
+        [TestMethod]
+        public void Max_SecondArgumentIsGreater_ReturnsSecondArgument()
+        {
+            // Arrange
+
+            // Act
+            int result = mathCalculator.Max(1, 2);
+
+            // Assert
+
+            Assert.AreEqual(2, result);
+        }
+
+        [TestMethod]
+        public void Max_FirstAndSecondArgumentIsEqual_ReturnsFirstArgument()
+        {
+            // Arrange
+
+            // Act
+            int result = mathCalculator.Max(1, 1);
+
+            // Assert
+
+            Assert.AreEqual(1, result);
+        }
+
+        [DataTestMethod]
+        [DataRow(2, 1, 2, DisplayName = "FirstArgumentIsGreater")]
+        [DataRow(1, 2, 2, DisplayName = "SecondArgumentIsGreater")]
+        [DataRow(1, 1, 1, DisplayName = "FirstAndSecondArgumentIsEqual")]
+        public void Max_ValidArguments_ReturnsValidArgument(int first, int second, int expected)
+        {
+            // Act
+            int result = mathCalculator.Max(first, second);
+
+            // Assert
+            Assert.AreEqual(expected, result);
+        }
+
 
     }
 }
