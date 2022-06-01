@@ -29,6 +29,8 @@ namespace TestApp.Fundamentals.xUnitUnitTests
             Assert.Throws<ArgumentNullException>(act);
         }
 
+      
+
         [Fact]
         public void Log_ValidMessage_ShouldSetLastMessage()
         {
@@ -41,6 +43,16 @@ namespace TestApp.Fundamentals.xUnitUnitTests
             Assert.Equal("a", logger.LastMessage);
         }
 
+
+        [Fact]
+        public async Task LogAsync_ValidMessage_ShouldSetLastMessage()
+        {
+            // Act
+            await logger.LogAsync("a");
+
+            // Assert
+            logger.LastMessage.Should().Be("a");
+        }
 
         [Fact]
         public void Log_ValidMessage_ShouldRaiseMessageLoggedEvent()

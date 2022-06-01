@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TestApp
 {
@@ -25,6 +26,13 @@ namespace TestApp
             // ...
 
             MessageLogged?.Invoke(this, DateTime.UtcNow);
+        }
+
+        public async Task LogAsync(string message)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(0.5));
+
+            Log(message);
         }
 
        
