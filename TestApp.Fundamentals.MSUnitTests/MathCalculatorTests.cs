@@ -67,7 +67,7 @@ namespace TestApp.Fundamentals.MSUnitTests
         public void Divide_FloatMianownikZero_ExpectedDivideByZeroException()
         {
             // Act
-            float result = mathCalculator.Divide(1f, 0f);
+            mathCalculator.Divide(1f, 0f);
 
             // Assert
         }
@@ -77,7 +77,7 @@ namespace TestApp.Fundamentals.MSUnitTests
         public void Divide_DecimalMianownikZero_ExpectedDivideByZeroException()
         {
             // Act
-            decimal result = mathCalculator.Divide(1m, 0m);
+            mathCalculator.Divide(1m, 0m);
 
             // Assert
         }
