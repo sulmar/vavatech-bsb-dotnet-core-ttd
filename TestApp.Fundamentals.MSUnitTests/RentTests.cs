@@ -27,13 +27,28 @@ namespace TestApp.Fundamentals.MSUnitTests
         public void CanReturn_UserIsAdmin_ReturnsTrue()
         {
             // Arrange
-            User admin = new User { IsAdmin = true };
+            User admin = new User();
+            admin.MakeAdmin();
 
             // Act
             var result = rent.CanReturn(admin);
 
-            // Assert
+            // Assert                    
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void MakeAdmin_WhenCalled_ReturnsUserIsAdmin()
+        {
+            // Arrange
+            User user = new User();
+
+            // Act
+            user.MakeAdmin();
+
+            // Assert
+            Assert.IsTrue(user.IsAdmin);
+
         }
 
         // jestem wypozyczajacym i mozemy zwrocic
