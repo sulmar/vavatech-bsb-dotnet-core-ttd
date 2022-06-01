@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippets", "Snippets", "{D5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Fundamentals.MSUnitTests", "TestApp.Fundamentals.MSUnitTests\TestApp.Fundamentals.MSUnitTests.csproj", "{49FDC9B8-892C-4558-B47C-E61D7EB73CD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Fundamentals.xUnitUnitTests", "TestApp.Fundamentals.xUnitUnitTests\TestApp.Fundamentals.xUnitUnitTests.csproj", "{5BB06CAF-D456-406B-B769-F2C96242796B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{49FDC9B8-892C-4558-B47C-E61D7EB73CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49FDC9B8-892C-4558-B47C-E61D7EB73CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49FDC9B8-892C-4558-B47C-E61D7EB73CD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB06CAF-D456-406B-B769-F2C96242796B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB06CAF-D456-406B-B769-F2C96242796B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB06CAF-D456-406B-B769-F2C96242796B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB06CAF-D456-406B-B769-F2C96242796B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

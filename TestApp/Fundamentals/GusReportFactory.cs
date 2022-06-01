@@ -24,15 +24,14 @@ namespace TestApp.Fundamentals.Gus
 
     public class ReportFactory
     {
-        public static Report Create(string type)
+        public static Report Create(string type) => type switch
         {
-            // P, LP, LF -> Osobowość prawna
-            // F -> Działalność fizyczna
-            // nieznany -> NotSupportedException
-
-            throw new NotImplementedException();
-        }
+            "P" or "LP" or "LF" => new LegalPersonality(),
+            "F" => new SoleTraderReport(),
+            _ => throw new NotSupportedException(),
+        };
+        
+        // P, LP, LF -> Osobowość prawna// F -> Działalność fizyczna// nieznany -> NotSupportedException
     }
-
  
 }

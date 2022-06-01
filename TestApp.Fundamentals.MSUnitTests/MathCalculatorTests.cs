@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -27,10 +28,13 @@ namespace TestApp.Fundamentals.MSUnitTests
             int result = mathCalculator.Add(a, b);
 
             // Assert
-            Assert.AreEqual(expected, result);
+            // Assert.AreEqual(expected, result);
+
+            // dotnet add package FluentAssertions
+            result.Should().Be(expected);
         }
 
-       
+
 
         [TestMethod]
         [ExpectedException(typeof(OverflowException))]

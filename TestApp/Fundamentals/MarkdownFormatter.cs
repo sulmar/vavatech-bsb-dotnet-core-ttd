@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace TestApp
@@ -8,9 +9,14 @@ namespace TestApp
 
     public class MarkdownFormatter
     {
+        public const string DoubleAsterix = "**";
+
         public string FormatAsBold(string content)
         {
-            return $"**{content}**";
+            if (string.IsNullOrEmpty(content))
+                throw new FormatException();
+
+            return $"{DoubleAsterix}{content}{DoubleAsterix}";
         }
     }
 }
