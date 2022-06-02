@@ -16,10 +16,7 @@ namespace TestApp.Mocking
 
     public class RealFileReader : IFileReader
     {
-        public string ReadAllText(string path)
-        {
-            return File.ReadAllText(path);
-        }
+        public string ReadAllText(string path) => File.ReadAllText(path);
     }
 
     // dotnet add package NGeoHash

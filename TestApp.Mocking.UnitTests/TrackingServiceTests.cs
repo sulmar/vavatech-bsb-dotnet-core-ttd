@@ -5,26 +5,17 @@ namespace TestApp.Mocking.UnitTests
 {
     public class FakeValidFile : IFileReader
     {
-        public string ReadAllText(string path)
-        {
-            return "{\"Latitude\":52.01,\"Longitude\":18.01}";
-        }
+        public string ReadAllText(string path) => "{\"Latitude\":52.01,\"Longitude\":18.01}";
     }
 
     public class FakeInvalidFile : IFileReader
     {
-        public string ReadAllText(string path)
-        {
-            return "a";
-        }
+        public string ReadAllText(string path) => "a";
     }
 
     public class FakeEmptyFile : IFileReader
     {
-        public string ReadAllText(string path)
-        {
-            return string.Empty;
-        }
+        public string ReadAllText(string path) => string.Empty;
     }
 
     public class TrackingServiceTests
