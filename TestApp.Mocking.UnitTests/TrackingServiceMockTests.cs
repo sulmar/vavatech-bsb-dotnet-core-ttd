@@ -12,27 +12,33 @@ namespace TestApp.Mocking.UnitTests
     // dotnet add package Moq
     public class TrackingServiceMockTests
     {
-        [Fact]
-        public void Get_ValidFile_ShouldReturnsLocation()
+        private readonly Mock<IFileReader> mockFileReader;
+        private readonly TrackingService trackingService;
+
+        private const string InvalidFile = "a";
+
+        public TrackingServiceMockTests()
+        {
+            mockFileReader = new Mock<IFileReader>();
+            trackingService = new TrackingService(mockFileReader.Object);
+        }
+
+        [Theory]
+        [InlineData("{\"Latitude\":52.01,\"Longitude\":18.01}", 52.01, 18.01)]
+        [InlineData("{\"Latitude\":-52.01,\"Longitude\":18.01}", -52.01, 18.01)]
+        public void Get_ValidFile_ShouldReturnsLocation(string json, double lat, double lng)
         {
             // Arrange
-            Mock<IFileReader> mockFileReader = new Mock<IFileReader>();
-            Mock<ILogger<TrackingService>> mockLogger = new Mock<ILogger<TrackingService>>();
-
             mockFileReader
                 .Setup(fr => fr.ReadAllText(It.IsAny<string>()))
-                .Returns("{\"Latitude\":52.01,\"Longitude\":18.01}");
-
-            IFileReader fileReader = mockFileReader.Object;
-
-            TrackingService trackingService = new TrackingService(fileReader);
+                .Returns(json);
 
             // Act
             var result = trackingService.Get();
 
             // Assert
-            Assert.Equal(52.01, result.Latitude);
-            Assert.Equal(18.01, result.Longitude);
+            Assert.Equal(lat, result.Latitude);
+            Assert.Equal(lng, result.Longitude);
 
         }
 
@@ -40,17 +46,9 @@ namespace TestApp.Mocking.UnitTests
         public void Get_InvalidFile_ShouldThrowsFormatException()
         {
             // Arrange
-            Mock<IFileReader> mockFileReader = new Mock<IFileReader>();
-            Mock<ILogger<TrackingService>> mockLogger = new Mock<ILogger<TrackingService>>();
-
-
             mockFileReader
                 .Setup(fr => fr.ReadAllText(It.IsAny<string>()))
-                .Returns("a");
-
-            IFileReader fileReader = mockFileReader.Object;
-
-            TrackingService trackingService = new TrackingService(fileReader);
+                .Returns(InvalidFile);
 
             // Act
             Action act = () => trackingService.Get();
@@ -63,16 +61,9 @@ namespace TestApp.Mocking.UnitTests
         public void Get_EmptyFile_ShouldThrowsApplicationException()
         {
             // Arrange
-            Mock<IFileReader> mockFileReader = new Mock<IFileReader>();
-            Mock<ILogger<TrackingService>> mockLogger = new Mock<ILogger<TrackingService>>();
-
             mockFileReader
                 .Setup(fr => fr.ReadAllText(It.IsAny<string>()))
                 .Returns(string.Empty);
-
-            IFileReader fileReader = mockFileReader.Object;
-
-            TrackingService trackingService = new TrackingService(fileReader);
 
             // Act
             Action act = () => trackingService.Get();
