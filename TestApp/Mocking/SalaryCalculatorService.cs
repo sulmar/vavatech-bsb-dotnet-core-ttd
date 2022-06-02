@@ -8,20 +8,43 @@ using System.Threading.Tasks;
 
 namespace TestApp.Mocking
 {
-    public class SalaryCalculatorService
+     
+    public interface IRateService
+    {
+        Task<Rate> GetAsync(string currencyCode);
+    }
+
+    public class NbpRateService : IRateService
     {
         const string url = "api/exchangerates/tables/a/?format=json";
 
-        public async Task<decimal> CalculateAsync(decimal amount, string currencyCode = "PLN")
+        public async Task<Rate> GetAsync(string currencyCode)
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://api.nbp.pl/");
 
             var rates = await client.GetFromJsonAsync<RatesList[]>(url);
-
+            
             Rate rate = rates.SelectMany(p => p.rates).SingleOrDefault(r => r.code == currencyCode);
 
-            decimal result = amount * (decimal)rate.mid;
+            return rate;
+
+        }
+    }
+
+    public class NbpPageRateService : IRateService
+    {
+        public Task<Rate> GetAsync(string currencyCode)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SalaryCalculatorService
+    {
+        public async Task<decimal> CalculateAsync(decimal amount, float ratio)
+        {
+            decimal result = amount * (decimal)ratio;
 
             return result;
 
