@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NGeoHash;
 using System;
@@ -16,7 +17,10 @@ namespace TestApp.Mocking
 
     public class RealFileReader : IFileReader
     {
-        public string ReadAllText(string path) => File.ReadAllText(path);
+        public string ReadAllText(string path)
+        {
+            return File.ReadAllText(path);
+        }
     }
 
     // dotnet add package NGeoHash
@@ -27,6 +31,7 @@ namespace TestApp.Mocking
         public TrackingService()
             : this(new RealFileReader())
         {
+            
         }
 
         public TrackingService(IFileReader fileReader)
@@ -36,11 +41,11 @@ namespace TestApp.Mocking
 
         public Location Get()
         {
-            string json = fileReader.ReadAllText("tracking.txt");
+            string json = fileReader.ReadAllText("tracking.json");
 
             try
             {
-                Location location = JsonConvert.DeserializeObject<Location>(json);
+                Location location = JsonConvert.DeserializeObject<Location>(json);                
 
                 if (location == null)
                     throw new ApplicationException("Error parsing the location");

@@ -18,7 +18,7 @@ namespace TestApp.Mocking.UnitTests
         public string ReadAllText(string path) => string.Empty;
     }
 
-    public class TrackingServiceTests
+    public class TrackingServiceFakeTests
     {
         [Fact]
         public void Get_ValidFile_ShouldReturnsLocation()
