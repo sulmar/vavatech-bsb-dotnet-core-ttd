@@ -29,39 +29,56 @@ namespace TestApp.Fundamentals
                 { AgingGroup.ExpiredFrom180To360Days, 0 },
                 { AgingGroup.ExpiredOver360Days, 0 },
             };
-        }       
+        }
+    }
+
+    public class AgingFactory
+    {
+        public static AgingGroup Create(int intervalDays)
+        {
+            if (intervalDays < 1)
+            {
+                return AgingGroup.Timely;
+            }
+            else if (intervalDays >= 1 && intervalDays < 30)
+            {
+                return AgingGroup.ExpiredTo30Days;
+            }
+            else if (intervalDays >= 30 && intervalDays < 90)
+            {
+                return AgingGroup.ExpiredFrom30To90Days;
+            }
+            else if (intervalDays >= 90 && intervalDays < 180)
+            {
+                return AgingGroup.ExpiredFrom90To180Days;
+            }
+            else if (intervalDays >= 180 && intervalDays < 360)
+            {
+                return AgingGroup.ExpiredFrom180To360Days;
+            }
+            else
+            {
+                return AgingGroup.ExpiredOver360Days;
+            }
+        }
     }
 
     public class VendorAgingCalculator
     {
+       
+
         public VendorAgingReport Calculate(params Invoice[] invoices)
         {
             VendorAgingReport vendorAgingReport = new VendorAgingReport($"Raport wiekowania płatności na dzień {DateTime.Today:dd.MM.yyyy}");
-            
+
             foreach (var invoice in invoices)
             {
                 var intervalDays = (invoice.DueDate - DateTime.Now).TotalDays;
 
-                if (intervalDays < 1)
-                {
-                    vendorAgingReport.Details[AgingGroup.Timely] += invoice.TotalAmount;
-                }
-                if (intervalDays > 1 && intervalDays < 30)
-                {
-                    vendorAgingReport.Details[AgingGroup.ExpiredTo30Days] += invoice.TotalAmount;
-                }
-                else if (intervalDays >= 30 && intervalDays < 90)
-                {
-                    vendorAgingReport.Details[AgingGroup.ExpiredFrom30To90Days] += invoice.TotalAmount;
-                }
-                else if (intervalDays >= 90 && intervalDays < 180)
-                {
-                    vendorAgingReport.Details[AgingGroup.ExpiredFrom90To180Days] += invoice.TotalAmount;
-                }
-                else
-                {
-                    vendorAgingReport.Details[AgingGroup.ExpiredOver360Days] -= invoice.TotalAmount;
-                }
+                var agingGroup = AgingFactory.Create((int) intervalDays);
+
+                vendorAgingReport.Details[agingGroup] += invoice.TotalAmount;
+                
             }
 
 

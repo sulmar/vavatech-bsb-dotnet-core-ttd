@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Fundamentals.MSUnit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Fundamentals.xUnitUnitTests", "TestApp.Fundamentals.xUnitUnitTests\TestApp.Fundamentals.xUnitUnitTests.csproj", "{5BB06CAF-D456-406B-B769-F2C96242796B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Mocking.UnitTests", "TestApp.Mocking.UnitTests\TestApp.Mocking.UnitTests.csproj", "{254EC321-E297-4FA0-9768-6618C300C0D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{5BB06CAF-D456-406B-B769-F2C96242796B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BB06CAF-D456-406B-B769-F2C96242796B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BB06CAF-D456-406B-B769-F2C96242796B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{254EC321-E297-4FA0-9768-6618C300C0D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{254EC321-E297-4FA0-9768-6618C300C0D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{254EC321-E297-4FA0-9768-6618C300C0D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{254EC321-E297-4FA0-9768-6618C300C0D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
