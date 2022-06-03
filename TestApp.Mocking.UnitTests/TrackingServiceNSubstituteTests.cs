@@ -5,18 +5,17 @@ using Xunit;
 
 namespace TestApp.Mocking.UnitTests
 {
-
-    // dotnet add package FakeItEasy
-    public class TrackingServiceFakeItEasyTests
+    // dotnet add package 
+    public class TrackingServiceNSubstituteTests
     {
         private readonly IFileReader fileReader;
         private readonly TrackingService trackingService;
 
         private const string InvalidFile = "a";
 
-        public TrackingServiceFakeItEasyTests()
+        public TrackingServiceNSubstituteTests()
         {
-            fileReader = A.Fake<IFileReader>();
+            fileReader = Substitute.For<IFileReader>();
             trackingService = new TrackingService(fileReader);
         }
 
@@ -26,7 +25,7 @@ namespace TestApp.Mocking.UnitTests
         public void Get_ValidFile_ShouldReturnsLocation(string json, double lat, double lng)
         {
             // Arrange
-            A.CallTo(() => fileReader.ReadAllText(A<string>.Ignored)).Returns(json);
+            fileReader.ReadAllText(Arg.Any<string>()).Returns(json);
 
             // Act
             var result = trackingService.Get();
@@ -41,7 +40,7 @@ namespace TestApp.Mocking.UnitTests
         public void Get_InvalidFile_ShouldThrowsFormatException()
         {
             // Arrange
-            A.CallTo(() => fileReader.ReadAllText(A<string>.Ignored)).Returns(InvalidFile);
+            fileReader.ReadAllText(Arg.Any<string>()).Returns(InvalidFile);
 
             // Act
             Action act = () => trackingService.Get();
@@ -54,7 +53,7 @@ namespace TestApp.Mocking.UnitTests
         public void Get_EmptyFile_ShouldThrowsApplicationException()
         {
             // Arrange
-            A.CallTo(() => fileReader.ReadAllText(A<string>.Ignored)).Returns(string.Empty);
+            fileReader.ReadAllText(Arg.Any<string>()).Returns(string.Empty);
 
             // Act
             Action act = () => trackingService.Get();
