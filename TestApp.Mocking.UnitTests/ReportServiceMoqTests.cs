@@ -9,7 +9,7 @@ using Xunit;
 namespace TestApp.Mocking.UnitTests
 {
 
-    public class ReportServiceTests
+    public class ReportServiceMoqTests
     {
         [Fact]
         public async Task SendSalesReportEmailAsync_Employees_ShouldSendMessage()
