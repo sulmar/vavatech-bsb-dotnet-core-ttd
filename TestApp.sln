@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Fundamentals.xUnitU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Mocking.UnitTests", "TestApp.Mocking.UnitTests\TestApp.Mocking.UnitTests.csproj", "{254EC321-E297-4FA0-9768-6618C300C0D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.IntegrationTests", "Api.IntegrationTests\Api.IntegrationTests.csproj", "{694B635A-13C0-4D6C-ACD2-4F23E6E23D10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{254EC321-E297-4FA0-9768-6618C300C0D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{254EC321-E297-4FA0-9768-6618C300C0D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{254EC321-E297-4FA0-9768-6618C300C0D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694B635A-13C0-4D6C-ACD2-4F23E6E23D10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694B635A-13C0-4D6C-ACD2-4F23E6E23D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694B635A-13C0-4D6C-ACD2-4F23E6E23D10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694B635A-13C0-4D6C-ACD2-4F23E6E23D10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

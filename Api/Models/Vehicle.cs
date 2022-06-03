@@ -10,6 +10,11 @@ namespace Api.Models
         public TKey Id { get; set; }
     }
 
+    public class Product : BaseEntity<int>
+    {
+
+    }
+
     public class Vehicle : BaseEntity<int>
     {
         public string Name { get; set; }
