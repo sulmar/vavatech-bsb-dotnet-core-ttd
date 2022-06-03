@@ -1,26 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
-using Moq;
+﻿using FakeItEasy;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace TestApp.Mocking.UnitTests
 {
-    // dotnet add package Moq
-    public class TrackingServiceMockTests
+    // dotnet add package FakeItEasy
+    public class TrackingServiceFakeItEasyTests
     {
-        private readonly Mock<IFileReader> mockFileReader;
+        private readonly IFileReader fileReader;
         private readonly TrackingService trackingService;
 
         private const string InvalidFile = "a";
 
-        public TrackingServiceMockTests()
+        public TrackingServiceFakeItEasyTests()
         {
-            mockFileReader = new Mock<IFileReader>();
-            trackingService = new TrackingService(mockFileReader.Object);
+            fileReader = A.Fake<IFileReader>();
+            trackingService = new TrackingService(fileReader);
         }
 
         [Theory]
@@ -29,9 +24,7 @@ namespace TestApp.Mocking.UnitTests
         public void Get_ValidFile_ShouldReturnsLocation(string json, double lat, double lng)
         {
             // Arrange
-            mockFileReader
-                .Setup(fr => fr.ReadAllText(It.IsAny<string>()))
-                .Returns(json);
+            A.CallTo(() => fileReader.ReadAllText(A<string>.Ignored)).Returns(json);
 
             // Act
             var result = trackingService.Get();
@@ -46,9 +39,7 @@ namespace TestApp.Mocking.UnitTests
         public void Get_InvalidFile_ShouldThrowsFormatException()
         {
             // Arrange
-            mockFileReader
-                .Setup(fr => fr.ReadAllText(It.IsAny<string>()))
-                .Returns(InvalidFile);
+            A.CallTo(() => fileReader.ReadAllText(A<string>.Ignored)).Returns(InvalidFile);
 
             // Act
             Action act = () => trackingService.Get();
@@ -61,9 +52,7 @@ namespace TestApp.Mocking.UnitTests
         public void Get_EmptyFile_ShouldThrowsApplicationException()
         {
             // Arrange
-            mockFileReader
-                .Setup(fr => fr.ReadAllText(It.IsAny<string>()))
-                .Returns(string.Empty);
+            A.CallTo(() => fileReader.ReadAllText(A<string>.Ignored)).Returns(string.Empty);
 
             // Act
             Action act = () => trackingService.Get();
