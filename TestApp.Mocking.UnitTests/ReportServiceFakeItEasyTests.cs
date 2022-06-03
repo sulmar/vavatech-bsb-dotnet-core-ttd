@@ -27,13 +27,12 @@ namespace TestApp.Mocking.UnitTests
                 new Employee { Email = string.Empty },
                 new Employee { Email = null },
             };
-         
+            var sendMessage = A.CallTo(() => messageService.SendMessage(A<Bot>.Ignored, A<Employee>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored));
             // Act
             await reportService.SendSalesReportEmailAsync(new SalesReport(), new Bot(), employees);
 
             // Assert
-            A.CallTo(() => messageService.SendMessage(A<Bot>.Ignored, A<Employee>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
-                .MustHaveHappened(3, Times.Exactly);
+            sendMessage.MustHaveHappened(3, Times.Exactly);
 
         }
     }
