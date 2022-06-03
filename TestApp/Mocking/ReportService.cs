@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
@@ -81,6 +82,8 @@ namespace TestApp.Mocking
 
         public decimal TotalAmount { get; set; }
 
+        public string Title { get; set; }
+
 
         public override string ToString()
         {
@@ -95,79 +98,135 @@ namespace TestApp.Mocking
 
     #endregion
 
-    public class ReportService
+    public interface IMessageService
+    {
+        Task SendMessage(Bot sender, Employee recipient, string subject, string content, string htmlContent);
+    }
+
+    public class SendGridMessageService : IMessageService
     {
         private const string apikey = "your_secret_key";
+
+        private readonly ISendGridClient client;
+        private readonly ILogger<SendGridMessageService> logger;
 
         public delegate void ReportSentHandler(object sender, ReportSentEventArgs e);
         public event ReportSentHandler ReportSent;
 
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-
-
-
-        public async Task SendSalesReportEmailAsync(DateTime date)
+        public SendGridMessageService(ISendGridClient sendGridClient, ILogger<SendGridMessageService> logger)
         {
-            OrderService orderService = new OrderService();
-
-            var orders = orderService.Get(date.AddDays(-7), date);
-
-            if (!orders.Any())
-            {
-                return;
-            }
-
-            SalesReport report = Create(orders);
-
             // dotnet add package SendGrid
-            SendGridClient client = new SendGridClient(apikey);
+            this.client = sendGridClient;
+            this.logger = logger;
+        }
+        
 
-            SalesContext salesContext = new SalesContext();
+        public async Task SendMessage(Bot sender, Employee recipient, string subject, string content, string htmlContent)
+        {
+            var message = MailHelper.CreateSingleEmail(
+                   new EmailAddress(sender.Email, $"{sender.FirstName} {sender.LastName}"),
+                   new EmailAddress(recipient.Email, $"{recipient.FirstName} {recipient.LastName}"),
+                   "Raport sprzedaży",
+                   content,
+                   htmlContent);
 
-            var recipients = salesContext.Users.OfType<Employee>().Where(e => e.IsBoss).ToList();
+            var response = await client.SendEmailAsync(message);
 
-            var sender = salesContext.Users.OfType<Bot>().Single();
+            if (response.StatusCode == System.Net.HttpStatusCode.Accepted)
+            {
+                ReportSent?.Invoke(this, new ReportSentEventArgs(DateTime.Now));
 
+                logger.LogInformation($"Raport został wysłany.");
+            }
+            else
+            {
+                logger.LogInformation($"Błąd podczas wysyłania raportu.");
+
+                throw new ApplicationException("Błąd podczas wysyłania raportu.");
+            }
+        }
+    }
+
+    public interface IUserRepository
+    {
+        IEnumerable<Employee> GetEmployees(bool isBoss);
+        IEnumerable<Employee> GetRecipients();
+        Bot GetBot();
+    }
+
+    public class DbUserRepository : IUserRepository
+    {
+        private readonly SalesContext salesContext;
+
+        public DbUserRepository(SalesContext salesContext)
+        {
+            this.salesContext = salesContext;
+        }
+
+        public Bot GetBot()
+        {
+            return salesContext.Users.OfType<Bot>().Single();
+        }
+
+        public IEnumerable<Employee> GetRecipients()
+        {
+            return GetEmployees(true).Where(e => !string.IsNullOrEmpty(e.Email));
+        }
+
+        public IEnumerable<Employee> GetEmployees(bool isBoss)
+        {
+            return salesContext.Users.OfType<Employee>().Where(e => e.IsBoss == isBoss).ToList();
+        }
+    }
+
+
+    public class SalesReportBuilder
+    {
+        private SalesReport salesReport = new SalesReport();
+        private IEnumerable<Order> orders;
+
+        public void AddOrders(IEnumerable<Order> orders)
+        {
+            this.orders = orders;
+        }
+
+        public void AddTotalAmount()
+        {
+            salesReport.TotalAmount = orders.Sum(o => o.Total);
+        }
+
+        public SalesReport Build()
+        {                        
+            return salesReport;
+        }
+    }
+
+
+
+    public class ReportService
+    {
+        private readonly IMessageService messageService;
+
+        public ReportService(IMessageService messageService)
+        {
+            this.messageService = messageService;
+        }
+
+        public async Task SendSalesReportEmailAsync(SalesReport report, Bot sender, IEnumerable<Employee> recipients)
+        {                                   
             foreach (var recipient in recipients)
             {
                 if (recipient.Email == null)
                     continue;
 
-                var message = MailHelper.CreateSingleEmail(
-                    new EmailAddress(sender.Email, $"{sender.FirstName} {sender.LastName}"), 
-                    new EmailAddress(recipient.Email, $"{recipient.FirstName} {recipient.LastName}"), 
-                    "Raport sprzedaży",
-                    report.ToString(),
-                    report.ToHtml());
+                await messageService.SendMessage(sender, recipient, report.Title, report.ToString(), report.ToHtml());
 
-
-                Logger.Info($"Wysyłanie raportu do {recipient.FirstName} {recipient.LastName} <{recipient.Email}>...");
-
-                var response = await client.SendEmailAsync(message);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.Accepted)
-                {
-                    ReportSent?.Invoke(this, new ReportSentEventArgs(DateTime.Now));
-
-                    Logger.Info($"Raport został wysłany.");
-                }
-                else
-                {
-                    Logger.Error($"Błąd podczas wysyłania raportu.");
-
-                    throw new ApplicationException("Błąd podczas wysyłania raportu.");
-                }
+              //  Logger.Info($"Wysyłanie raportu do {recipient.FirstName} {recipient.LastName} <{recipient.Email}>...");             
+              
             }
         }
 
-        private static SalesReport Create(IEnumerable<Order> orders)
-        {
-            SalesReport salesReport = new SalesReport();
-
-            salesReport.TotalAmount = orders.Sum(o => o.Total);
-
-            return salesReport;
-        }
+       
     }
 
     public class ReportSentEventArgs : EventArgs
