@@ -1,18 +1,17 @@
-﻿using NSubstitute;
+﻿using FakeItEasy;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace TestApp.Mocking.UnitTests
 {
-
-    public class ReportServiceNSubsituteTests
+    public class ReportServiceFakeItEasyTests
     {
         private readonly IMessageService messageService;
         private readonly ReportService reportService;
-        public ReportServiceNSubsituteTests()
+        public ReportServiceFakeItEasyTests()
         {
-            messageService = Substitute.For<IMessageService>();
+            messageService = A.Fake<IMessageService>();
             reportService = new ReportService(messageService);
         }
 
@@ -28,13 +27,13 @@ namespace TestApp.Mocking.UnitTests
                 new Employee { Email = string.Empty },
                 new Employee { Email = null },
             };
-
+         
             // Act
             await reportService.SendSalesReportEmailAsync(new SalesReport(), new Bot(), employees);
 
             // Assert
-            await messageService.Received(3)
-                .SendMessage(Arg.Any<Bot>(), Arg.Any<Employee>(),Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>());
+            A.CallTo(() => messageService.SendMessage(A<Bot>.Ignored, A<Employee>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
+                .MustHaveHappened(3, Times.Exactly);
 
         }
     }
