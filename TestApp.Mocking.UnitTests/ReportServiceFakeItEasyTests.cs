@@ -35,5 +35,31 @@ namespace TestApp.Mocking.UnitTests
             sendMessage.MustHaveHappened(3, Times.Exactly);
 
         }
+
+        [Fact]
+        public async Task SendSalesReportEmailAsync_Employees_ShouldSendMessageCallback()
+        {
+            int timesCalled = 0;
+
+            // Arrange          
+            IEnumerable<Employee> employees = new List<Employee>
+            {
+                new Employee { Email = "a" },
+                new Employee { Email = "b" },
+                new Employee { Email = "c" },
+                new Employee { Email = string.Empty },
+                new Employee { Email = null },
+            };
+
+            var sendMessage = A.CallTo(() => messageService.SendMessage(A<Bot>.Ignored, A<Employee>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
+                .Invokes(() => ++timesCalled);
+
+            // Act
+            await reportService.SendSalesReportEmailAsync(new SalesReport(), new Bot(), employees);
+
+            // Assert
+            Assert.Equal(3, timesCalled);
+
+        }
     }
 }
