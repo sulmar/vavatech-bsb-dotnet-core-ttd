@@ -44,7 +44,7 @@ namespace TestApp.Mocking.UnitTests
         }
 
         [Fact]
-        public async Task SendSalesReportEmailAsync_Employees_ShouldSendMessage2()
+        public async Task SendSalesReportEmailAsync_Employees_ShouldSendMessageCallback()
         {
             int timesCalled = 0;
 
