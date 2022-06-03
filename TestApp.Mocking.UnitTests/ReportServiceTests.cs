@@ -8,6 +8,7 @@ using Xunit;
 
 namespace TestApp.Mocking.UnitTests
 {
+
     public class ReportServiceTests
     {
         [Fact]
