@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.IntegrationTests
 {
-    public class ApiFakeTestFactory : WebApplicationFactory<Startup>
+    public class ApiFakeFactory : WebApplicationFactory<Startup>
     {       
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

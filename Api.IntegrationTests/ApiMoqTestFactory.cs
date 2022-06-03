@@ -9,7 +9,7 @@ using Moq;
 
 namespace Api.IntegrationTests
 {
-    public class ApiMoqTestFactory : WebApplicationFactory<Startup>
+    public class ApiMoqFactory : WebApplicationFactory<Startup>
     {       
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {            
@@ -19,7 +19,7 @@ namespace Api.IntegrationTests
 
                 mockVehicleRepository
                     .Setup(vr => vr.Get(1))
-                    .Returns(new Models.Vehicle());
+                    .Returns(new Vehicle());
 
                 mockVehicleRepository
                     .Setup(vr => vr.Get(0))

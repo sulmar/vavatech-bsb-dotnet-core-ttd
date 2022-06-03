@@ -5,20 +5,20 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
+using NSubstitute;
 
 namespace Api.IntegrationTests
 {
-    public class ApiItEasyFactory : WebApplicationFactory<Startup>
+    public class ApiNSubstituteFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureTestServices(services =>
             {
-                IVehicleRepository vehicleRepository = A.Fake<IVehicleRepository>();
+                IVehicleRepository vehicleRepository = Substitute.For<IVehicleRepository>();
 
-                A.CallTo(() => vehicleRepository.Get(1)).Returns(new Vehicle());
-                A.CallTo(() => vehicleRepository.Get(0)).Returns(null);
+                vehicleRepository.Get(1).Returns(new Vehicle());
+                vehicleRepository.Get(0).Returns(default(Vehicle));
 
                 services.AddSingleton<IVehicleRepository>(vehicleRepository);
             });
