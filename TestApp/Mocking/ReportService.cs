@@ -216,7 +216,7 @@ namespace TestApp.Mocking
         {                                   
             foreach (var recipient in recipients)
             {
-                if (recipient.Email == null)
+                if (string.IsNullOrEmpty(recipient.Email))
                     continue;
 
                 await messageService.SendMessage(sender, recipient, report.Title, report.ToString(), report.ToHtml());
