@@ -9,7 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippets", "Snippets", "{D57C466D-3463-467D-9850-BD17C8E6689E}"
 	ProjectSection(SolutionItems) = preProject
-		test-method.snippet = test-method.snippet
+		..\..\..\Downloads\nunit-test-method.snippet = ..\..\..\Downloads\nunit-test-method.snippet
+		..\..\..\Downloads\xunit-test-method.snippet = ..\..\..\Downloads\xunit-test-method.snippet
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Fundamentals.MSUnitTests", "TestApp.Fundamentals.MSUnitTests\TestApp.Fundamentals.MSUnitTests.csproj", "{49FDC9B8-892C-4558-B47C-E61D7EB73CD0}"
