@@ -9,7 +9,7 @@ using Moq;
 
 namespace Api.IntegrationTests
 {
-    public class ApiMockTestFactory : WebApplicationFactory<Startup>
+    public class ApiMoqTestFactory : WebApplicationFactory<Startup>
     {       
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {            

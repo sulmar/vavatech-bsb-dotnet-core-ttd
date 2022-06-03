@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Api.IntegrationTests
 {
-    public class VehiclesControllerTests : IClassFixture<ApiMockTestFactory>
+    public class VehiclesControllerTests : IClassFixture<ApiMoqTestFactory>
     {
         private readonly HttpClient client;
 
-        public VehiclesControllerTests(ApiMockTestFactory factory)
+        public VehiclesControllerTests(ApiMoqTestFactory factory)
         {
             client = factory.CreateClient();
         }
