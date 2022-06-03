@@ -25,7 +25,10 @@ namespace TestApp.Mocking.UnitTests
         public void Get_ValidFile_ShouldReturnsLocation(string json, double lat, double lng)
         {
             // Arrange
-            fileReader.ReadAllText(Arg.Any<string>()).Returns(json);
+            // fileReader.ReadAllText(Arg.Any<string>()).Returns(json);
+
+            // Z użyciem default dla zwiększenia czytelności
+            fileReader.ReadAllText(default).ReturnsForAnyArgs(json);
 
             // Act
             var result = trackingService.Get();
@@ -40,7 +43,10 @@ namespace TestApp.Mocking.UnitTests
         public void Get_InvalidFile_ShouldThrowsFormatException()
         {
             // Arrange
-            fileReader.ReadAllText(Arg.Any<string>()).Returns(InvalidFile);
+            // fileReader.ReadAllText(Arg.Any<string>()).Returns(InvalidFile);
+
+            // Z użyciem default dla zwiększenia czytelności
+            fileReader.ReadAllText(default).ReturnsForAnyArgs(InvalidFile);
 
             // Act
             Action act = () => trackingService.Get();
@@ -53,7 +59,10 @@ namespace TestApp.Mocking.UnitTests
         public void Get_EmptyFile_ShouldThrowsApplicationException()
         {
             // Arrange
-            fileReader.ReadAllText(Arg.Any<string>()).Returns(string.Empty);
+            // fileReader.ReadAllText(Arg.Any<string>()).Returns(string.Empty);
+
+            // Z użyciem default dla zwiększenia czytelności
+            fileReader.ReadAllText(default).ReturnsForAnyArgs(string.Empty);
 
             // Act
             Action act = () => trackingService.Get();

@@ -36,6 +36,34 @@ namespace TestApp.Mocking.UnitTests
             await messageService.Received(3)
                 .SendMessage(Arg.Any<Bot>(), Arg.Any<Employee>(),Arg.Any<string>(),Arg.Any<string>(),Arg.Any<string>());
 
+
+
+
+        }
+
+        [Fact]
+        public async Task SendSalesReportEmailAsync_Employees_ShouldSendMessageCallback()
+        {
+            int timesCalled = 0;
+
+            // Arrange          
+            IEnumerable<Employee> employees = new List<Employee>
+            {
+                new Employee { Email = "a" },
+                new Employee { Email = "b" },
+                new Employee { Email = "c" },
+                new Employee { Email = string.Empty },
+                new Employee { Email = null },
+            };
+
+            messageService.SendMessage(default, default, default, default, default).ReturnsForAnyArgs(Task.CompletedTask).AndDoes(a => ++timesCalled);
+
+            // Act
+            await reportService.SendSalesReportEmailAsync(new SalesReport(), new Bot(), employees);
+
+            // Assert
+            Assert.Equal(3, timesCalled);
+
         }
     }
 }
