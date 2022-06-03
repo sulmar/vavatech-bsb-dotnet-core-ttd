@@ -20,11 +20,8 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Debugger.Launch();
-
             Vehicle vehicle = vehicleRepository.Get(id);
 
-            
             if (vehicle == null)
                 return NotFound();
 
