@@ -1,4 +1,5 @@
 
+## Frameworki
 
 | MSTest v2.x.         | xUnit.net 2.x             | NUnit 3.x            | Comments                                           |
 | -------------------- | ------------------------- | -------------------- | -------------------------------------------------- |
@@ -12,3 +13,7 @@
 | \[TestProperty\]     | \[Trait\]                 | \[Property\]         | Sets arbitrary metadata on a test.                 |
 | \[DataRow\]          | \[Theory\]                | \[Theory\]           | Configures a data-driven test.                     |
 | \[TestCategory("")\] | \[Trait("Category", "")\] | \[Category("")\]     | Categorizes the test cases or classes.             |
+
+  
+## Testy mutacyjne
+https://stryker-mutator.io/docs/stryker-net/Getting-started
