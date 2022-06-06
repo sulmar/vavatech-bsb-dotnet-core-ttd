@@ -1,6 +1,13 @@
+using Api.IRepositories;
+using Api.Models;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Moq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,13 +15,31 @@ using Xunit;
 
 namespace Api.IntegrationTests
 {
-    public class VehiclesControllerTests : IClassFixture<ApiNSubstituteFactory>
+    public class VehiclesControllerTests
     {
         private readonly HttpClient client;
 
-        public VehiclesControllerTests(ApiMoqFactory factory)
+        public VehiclesControllerTests()
         {
-            client = factory.CreateClient();
+            var server = new TestServer(WebHost.CreateDefaultBuilder()
+                .UseStartup<Startup>()
+                .ConfigureTestServices(services =>
+                {
+                    Mock<IVehicleRepository> mockVehicleRepository = new Mock<IVehicleRepository>(MockBehavior.Strict);
+
+                    mockVehicleRepository
+                        .Setup(vr => vr.Get(1))
+                        .Returns(new Vehicle());
+
+                    mockVehicleRepository
+                        .Setup(vr => vr.Get(0))
+                        .Returns<Vehicle>(null);
+                    
+                    services.AddSingleton<IVehicleRepository>(mockVehicleRepository.Object);
+                })
+                .UseEnvironment("Development"));
+
+            client = server.CreateClient();
         }
 
         [Fact]
@@ -44,5 +69,7 @@ namespace Api.IntegrationTests
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
+
+
     }
 }
