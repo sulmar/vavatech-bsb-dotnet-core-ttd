@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System.Net;
 using System.Net.Http;
@@ -23,6 +25,10 @@ namespace Api.IntegrationTests
         {
             var server = new TestServer(WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>()
+                .ConfigureServices(services =>
+                {
+                    services.AddTransient(typeof(ILogger<>), typeof(NullLogger<>)); // Rejestracja minimalistycznego loggera, który nic nie robi
+                })
                 .ConfigureTestServices(services =>
                 {
                     Mock<IVehicleRepository> mockVehicleRepository = new Mock<IVehicleRepository>(MockBehavior.Strict);

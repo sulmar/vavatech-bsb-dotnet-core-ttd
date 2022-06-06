@@ -1,6 +1,7 @@
 ﻿using Api.IRepositories;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace Api.Controllers
@@ -10,10 +11,12 @@ namespace Api.Controllers
     public class VehiclesController : ControllerBase
     {
         private readonly IVehicleRepository vehicleRepository;
+        private readonly ILogger<VehiclesController> logger;
 
-        public VehiclesController(IVehicleRepository vehicleRepository)
+        public VehiclesController(IVehicleRepository vehicleRepository, ILogger<VehiclesController> logger)
         {
             this.vehicleRepository = vehicleRepository;
+            this.logger = logger;
         }
 
         // GET api/vehicles/{id}
@@ -24,6 +27,8 @@ namespace Api.Controllers
 
             if (vehicle == null)
                 return NotFound();
+
+            logger.LogInformation("Get vehicle id={id}", id);
 
             return Ok(vehicle);
         }
